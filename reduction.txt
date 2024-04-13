@@ -1,0 +1,21 @@
+This file explains how the reduction from 3SAT to SUBSETSUM works, assume we have m variables and n clauses:
+1. The number that we will test in the SUBSETSUM problem will have (m + n)-digits, one for each variable, one for each clause.
+2. Our set will be filled with numbers that have at most (m + n)-digits, but it can also have less.
+3. In all these numbers, each digit will correspond to either a variable or a clause.
+
+The test number will consist of a bunch of 1's (one for each variable) followed by 3's (one for each clause).
+
+But how do we generate the numbers for our set? Let's start with the clauses since they're easiest.
+For each clause c_i (with 1 <= i <= n) we generate the number 10^(j-1) twice and add them to the set.
+We also say that the i-th digit represents c_i (note that we read digits in ascending order of significance).
+
+These numbers are necessary, because a clause must be satisfied by at least one variable, but can be satisfied by at most 3.
+We must generalize for all these different cases.
+
+As for the variables. For each variable v_j (1 <= j <= m) we generate the number 10^(n+j-1) twice, but before adding it we must alter it:
+1. The first copy of the number will represent the variable v_j if it is set to True, knowing this, it might satisfy some clauses.
+2. For each clause c_i (1 <= i <= n) that is satisfied if v_j is True, change the i-th digit of the number to 1.
+3. The second copy of the number will represent v_j if it is set to False, this too might satisfy clauses.
+4. For each clause c_i (1 <= i <= n) that is satisfied if v_j is False, change the i-th digit of the number to 1.
+
+After these steps, the 2 numbers can be added to the set, and we can solve the SUBSETSUM problem.
